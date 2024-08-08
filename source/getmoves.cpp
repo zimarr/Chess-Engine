@@ -22,13 +22,7 @@ std::vector<Move> Pawn::getMoves() {
     //experimental
     vector<Move> actualMoves;
 
-    for (Move move : moves) {
-        if (move.pos.inBounds() && !Chess::whiteMatrix[move.pos]) {
-            actualMoves.push_back(move);
-        }
-    }
-
-    return actualMoves;
+    return moves;
 }
 
 std::vector<Move> Knight::getMoves() {

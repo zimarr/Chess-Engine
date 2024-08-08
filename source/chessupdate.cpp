@@ -69,6 +69,8 @@ void Chess::mouseClick(SDL_Event e) {
             }
 
             cout << "got here3" << endl;
+            
+            whiteMatrix.reset();
 
             for (Piece* piece : white.pieces) {
                 whiteMatrix[piece->pos] = piece;
