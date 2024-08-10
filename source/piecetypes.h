@@ -5,45 +5,46 @@
 #include "piece.h"
 #include "player.h"
 #include "move.h"
+#include "classifier.h"
 
 class Pawn : public Piece {
     public:
-        Pawn(char  c, int r);
+        Pawn(char  c, int r, Color clr);
 
         std::vector<Move> getMoves(Player* player) override;
 };
 
 class Knight : public Piece {
     public:
-        Knight(char c, int r);
+        Knight(char c, int r, Color clr);
 
         std::vector<Move> getMoves(Player* player) override;
 };
 
 class Bishop : public Piece {
     public:
-        Bishop(char c, int r);
+        Bishop(char c, int r, Color clr);
 
         std::vector<Move> getMoves(Player* player) override;
 };
 
 class Rook : public Piece {
     public:
-        Rook(char c, int r);
+        Rook(char c, int r, Color clr);
 
         std::vector<Move> getMoves(Player* player) override;      
 };
 
 class Queen : public Piece {
     public:
-        Queen(char c, int r);
+        Queen(char c, int r, Color clr);
 
         std::vector<Move> getMoves(Player* player) override;      
 };
 
 class King : public Piece {
     public:
-        King(char c, int r);
+        King(char c, int r, Color clr);
 
         std::vector<Move> getMoves(Player* player) override;
 };

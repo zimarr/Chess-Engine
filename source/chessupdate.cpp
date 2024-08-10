@@ -54,18 +54,29 @@ void Chess::mouseClick(SDL_Event e) {
             cout << endl;
         } else {
             Position clickedPos = getClickedPosition(e.button.x, e.button.y);
-            bool containsPos = false;
+            Move* validMove = nullptr;
 
             for (Move move : moves) {
                 if (move.pos.col == clickedPos.col && move.pos.row == clickedPos.row) { // add operator for this
-                    containsPos = true;
+                    validMove = &move;
                     break;
                 }
             }
             
-            if (containsPos) {
-                play->selecting->pos = clickedPos;
+            if (validMove) {
+                play->selecting->pos = clickedPos;      // make move, change pos, change moved bool
                 play->selecting->moved = true;
+                if (validMove->eliminate) {
+                    validMove->eliminate->pos.col = 'H' + 1;
+                    validMove->eliminate->pos.row = 8;
+                    for (int i = 0; i < play->opponent->pieces.size(); i++) {
+                        if (play->opponent->pieces[i] == validMove->eliminate) {
+                            play->opponent->pieces.erase(play->opponent->pieces.begin() + i);
+                        }
+                    }
+
+                    //delete eliminate, remove from pieces
+                }
             }
             
             white.matrix.reset();
@@ -81,7 +92,7 @@ void Chess::mouseClick(SDL_Event e) {
             }
 
             play->selecting = nullptr;  // unselect when clicked no piece
-            if (containsPos) {
+            if (validMove) {
                 switchTurns();
             }
             moves = {};

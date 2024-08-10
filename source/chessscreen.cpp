@@ -84,7 +84,8 @@ void ChessScreen::draw() {
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
     SDL_RenderClear(rend);
 
-    SDL_RenderCopy(rend, board, NULL, NULL);
+    SDL_Rect destRect{0, 0, 800, 800};
+    SDL_RenderCopy(rend, board, NULL, &destRect);
     chess.draw(rend);
 
     SDL_RenderPresent(rend);

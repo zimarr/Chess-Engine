@@ -1,9 +1,14 @@
 functionality
 * add enemy detection
-- flip board
-- enemy eating
+* flip board
+* enemy eating
 - color pieces
-- 
+- don't let pieces overlap with enemy pieces
+- add en peassanenteadf
+- add rook thing
+- add pawn turning into queen/knight etc
+- add piece dragging
 
 style
 - add all textures to namespace
+- add .h files to one include file

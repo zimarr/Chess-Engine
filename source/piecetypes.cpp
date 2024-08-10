@@ -3,10 +3,13 @@
 #include <SDL_image.h>
 #include "piecetypes.h"
 #include "player.h"
+#include "classifier.h"
 
-Pawn::Pawn(char  c, int r) {
+Pawn::Pawn(char  c, int r, Color clr) {
     pos = Position(c, r);
     
+    color = clr;
+
     texture = IMG_LoadTexture(Piece::rend, "./res/pawn.png");
 
     if (!(texture)) {
@@ -14,8 +17,10 @@ Pawn::Pawn(char  c, int r) {
     }   
 }
 
-Knight::Knight(char  c, int r) {
+Knight::Knight(char  c, int r, Color clr) {
     pos = Position(c, r);
+
+    color = clr;
     
     texture = IMG_LoadTexture(Piece::rend, "./res/knight.png");
 
@@ -24,8 +29,10 @@ Knight::Knight(char  c, int r) {
     }   
 }
 
-Bishop::Bishop(char  c, int r) {
+Bishop::Bishop(char  c, int r, Color clr) {
     pos = Position(c, r);
+
+    color = clr;
     
     texture = IMG_LoadTexture(Piece::rend, "./res/bishop.png");
 
@@ -34,8 +41,10 @@ Bishop::Bishop(char  c, int r) {
     }   
 }
 
-Rook::Rook(char  c, int r) {
+Rook::Rook(char  c, int r, Color clr) {
     pos = Position(c, r);
+
+    color = clr;
     
     texture = IMG_LoadTexture(Piece::rend, "./res/rook.png");
 
@@ -44,8 +53,10 @@ Rook::Rook(char  c, int r) {
     }   
 }
 
-Queen::Queen(char  c, int r) {
+Queen::Queen(char  c, int r, Color clr) {
     pos = Position(c, r);
+
+    color = clr;
     
     texture = IMG_LoadTexture(Piece::rend, "./res/queen.png");
 
@@ -54,8 +65,10 @@ Queen::Queen(char  c, int r) {
     }   
 }
 
-King::King(char  c, int r) {
+King::King(char  c, int r, Color clr) {
     pos = Position(c, r);
+
+    color = clr;
     
     texture = IMG_LoadTexture(Piece::rend, "./res/king.png");
 
