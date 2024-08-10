@@ -5,21 +5,27 @@
 #include <vector> //maybe set?
 #include "move.h"
 #include "position.h"
+#include "classifier.h"
+
+class Player;
 
 class Piece {
     public:
-        Piece() {};
+        Piece() {}
 
-        int getXPos();
-        int getYPos();
+        
 
-        virtual std::vector<Move> getMoves();
+        virtual std::vector<Move> getMoves(Player* player);
 
         Position pos;
 
+        Color color;
+
         SDL_Texture *texture;
 
-        void draw();
+        void draw(Color turn, bool flipEnabled);
+
+        bool moved = false;
 
         static SDL_Renderer *rend;
 };

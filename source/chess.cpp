@@ -5,10 +5,14 @@
 #include "piecetypes.h"
 #include "drawpieces.h"
 
-PieceMatrix Chess::whiteMatrix;
-
 Chess::Chess() {
+    white = Player(Color::WHITE);
+    black = Player(Color::BLACK);
+    white.opponent = &black;
+    black.opponent = &white;
+    play = &white;
 
+    flipEnabled = false;
 }
 
 #include <iostream>
@@ -64,7 +68,11 @@ void Chess::initPieces(SDL_Renderer *rend) {
     black.pieces.push_back(new King('E', 8));
 
     for (Piece* piece : white.pieces) {
-        whiteMatrix[piece->pos] = piece;
+        white.matrix[piece->pos] = piece;
+    }
+
+    for (Piece* piece : black.pieces) {
+        black.matrix[piece->pos] = piece;
     }
 }
 
@@ -76,11 +84,11 @@ void Chess::draw(SDL_Renderer *rend) {
     SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
     
     for (Piece* piece : white.pieces) {
-        piece->draw();
+        piece->draw(play->color, flipEnabled);
     }
 
     for (Piece* piece : black.pieces) {
-        piece->draw();
+        piece->draw(play->color, flipEnabled);
     }
 
     drawMoves();

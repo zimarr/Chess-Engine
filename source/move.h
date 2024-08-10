@@ -1,13 +1,15 @@
 #pragma once
 
 #include "position.h"
-#include "piece.h"
+
+class Piece;
 
 struct Move {
-    Move(Position np) { // add elem param
+    Move(Position np, Piece* elim = nullptr) { // add elem param
         pos = np;
+        eliminate = elim;
     }
 
     Position pos;
-    int *eliminate = nullptr; // change to piece but error
+    Piece* eliminate = nullptr; // change to piece but error
 };

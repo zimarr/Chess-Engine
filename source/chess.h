@@ -4,6 +4,7 @@
 #include "piece.h"
 #include "player.h"
 #include "piecematrix.h"
+#include "classifier.h"
 
 class Chess {
     public:
@@ -21,12 +22,16 @@ class Chess {
         void mouseClick(SDL_Event e);
         void mouseRelease(SDL_Event e);
         Piece* getClickedPiece(int x, int y);
-
-        static PieceMatrix whiteMatrix;
+        Position getClickedPosition(int x, int y);
+        void switchTurns();
 
     // private:
         std::vector<Move> moves;
 
         Player white;
         Player black;
+
+        bool flipEnabled;
+
+        Player* play;
 };

@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "piecetypes.h"
+#include "player.h"
 
 Pawn::Pawn(char  c, int r) {
     pos = Position(c, r);

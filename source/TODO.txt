@@ -1,0 +1,9 @@
+functionality
+* add enemy detection
+- flip board
+- enemy eating
+- color pieces
+- 
+
+style
+- add all textures to namespace
