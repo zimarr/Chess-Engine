@@ -2,7 +2,7 @@ functionality
 * add enemy detection
 * flip board
 * enemy eating
-- color pieces
+* color pieces
 - don't let pieces overlap with enemy pieces
 - add en peassanenteadf
 - add rook thing
