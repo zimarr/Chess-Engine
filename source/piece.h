@@ -27,6 +27,8 @@ class Piece {
 
         bool moved = false;
 
+        bool isKing = false;
+
         static SDL_Renderer *rend;
 };
 

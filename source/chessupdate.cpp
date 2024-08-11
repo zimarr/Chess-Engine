@@ -74,9 +74,9 @@ void Chess::mouseClick(SDL_Event e) {
                             play->opponent->pieces.erase(play->opponent->pieces.begin() + i);
                         }
                     }
-
-                    //delete eliminate, remove from pieces
                 }
+
+                checkForCheck(play);
             }
             
             white.matrix.reset();
@@ -102,6 +102,26 @@ void Chess::mouseClick(SDL_Event e) {
         moves = {};
     }
 }
+
+void Chess::checkForCheck(Player* player) {
+    for (Piece* piece : player->pieces) {
+        std::vector<Move> moves = piece->getMoves(player);
+        for (Move& move : moves) {
+            if (move.eliminate) {
+                if (move.eliminate->isKing) {
+                    player->opponent->inCheck = true;
+                    cout << "omg someones in check..." << endl;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
 
 void Chess::mouseRelease(SDL_Event e) {
     // is this necessary!

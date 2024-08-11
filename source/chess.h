@@ -16,8 +16,10 @@ class Chess {
         void draw(SDL_Renderer *rend);
 
         void initPieces(SDL_Renderer *rend);
-
+    
         void drawMoves();
+
+        void checkForCheck(Player* player);
 
         void mouseClick(SDL_Event e);
         void mouseRelease(SDL_Event e);

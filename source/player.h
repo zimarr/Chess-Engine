@@ -21,6 +21,8 @@ class Player {
 
         Color color;
 
+        bool inCheck = false;
+
     private:
 
 };

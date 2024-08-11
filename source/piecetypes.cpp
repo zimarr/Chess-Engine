@@ -70,6 +70,8 @@ King::King(char  c, int r, Color clr) {
 
     color = clr;
     
+    isKing = true;
+
     texture = IMG_LoadTexture(Piece::rend, "./res/king.png");
 
     if (!(texture)) {
