@@ -3,7 +3,7 @@ functionality
 * flip board
 * enemy eating
 * color pieces
-- don't let pieces overlap with enemy pieces
+* don't let pieces overlap with enemy pieces
 - add en peassanenteadf
 - add rook thing
 - add pawn turning into queen/knight etc

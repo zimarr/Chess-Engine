@@ -28,8 +28,8 @@ std::vector<Move> Pawn::getMoves(Player* player) {
 
     for (int step = 1; step <= steps; step++) {
         Position p(pos.col, pos.row + step * player->color);
-        if (!p.inBounds() && player->matrix[p]) {
-            return moves;
+        if (!p.inBounds() || player->matrix[p] || player->opponent->matrix[p]) {
+            break;
         }
         moves.push_back(Move(p));
     }

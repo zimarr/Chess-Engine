@@ -35,7 +35,7 @@ Position Chess::getClickedPosition(int x, int y) {
     if (!flipEnabled | play->color == WHITE) {
         return Position(x / 100 + 'A', -1 * (y / 100 - 8));
     } else {
-        return Position('H' - (x / 100), 1 + (8 - (y / 100)));
+        return Position('A' + 7 - (x / 100), y / 100 + 1);
     }
 }
 
