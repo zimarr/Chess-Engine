@@ -12,7 +12,7 @@ Chess::Chess() {
     black.opponent = &white;
     play = &white;
 
-    flipEnabled = true;
+    flipEnabled = false;
 }
 
 #include <iostream>

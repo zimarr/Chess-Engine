@@ -67,8 +67,6 @@ void Chess::mouseClick(SDL_Event e) {
                 play->selecting->pos = clickedPos;      // make move, change pos, change moved bool
                 play->selecting->moved = true;
                 if (validMove->eliminate) {
-                    validMove->eliminate->pos.col = 'H' + 1;
-                    validMove->eliminate->pos.row = 8;
                     for (int i = 0; i < play->opponent->pieces.size(); i++) {
                         if (play->opponent->pieces[i] == validMove->eliminate) {
                             play->opponent->pieces.erase(play->opponent->pieces.begin() + i);
@@ -80,7 +78,7 @@ void Chess::mouseClick(SDL_Event e) {
             }
             
             white.matrix.reset();
-        
+
             for (Piece* piece : white.pieces) {
                 white.matrix[piece->pos] = piece;
             }
@@ -130,7 +128,18 @@ void Chess::mouseRelease(SDL_Event e) {
 
 void Chess::update() {
     
-    
+    // for (auto& row : white.matrix.matrix) {
+    //     for (Piece* piece : row) {
+    //         if (!piece) {
+    //             cout << "o ";
+    //         } else {
+    //             cout << "x ";
+    //         }
+    //     }
+    //     cout << endl;
+    // }
+
+    // cout << endl;
 
 
 

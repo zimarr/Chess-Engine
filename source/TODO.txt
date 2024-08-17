@@ -17,3 +17,4 @@ functionality
 style
 - add all textures to namespace
 - add .h files to one include file
+- add validate move function

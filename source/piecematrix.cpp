@@ -1,13 +1,16 @@
 #include <algorithm>
+#include <iostream>
 #include "piecematrix.h"
 
 Piece*& PieceMatrix::operator[](Position pos){
-    return matrix[pos.col - 'A'][pos.row];
+    return matrix[pos.col - 'A'][pos.row - 1];
 }
 
 void PieceMatrix::reset() {
-    for (auto& row : matrix) {
-        std::fill(row.begin(), row.end(), nullptr);
+    for (std::vector<Piece*>& row : matrix) {
+        for (Piece*& piece : row) {
+            piece = nullptr;
+        }
     }
 }
 
