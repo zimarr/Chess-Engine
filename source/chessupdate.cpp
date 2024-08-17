@@ -115,6 +115,8 @@ void Chess::checkForCheck(Player* player) {
             }
         }
     }
+
+    player->opponent->inCheck = false;
 }
 
 
