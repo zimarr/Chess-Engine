@@ -11,7 +11,17 @@ bool isValidMoveInCheck(Player* player, Move move) {
 
     player->matrix[move.piece->pos] = nullptr;
     move.piece->pos = move.pos;
-    player->matrix[move.pos] = move.piece;    
+    player->matrix[move.pos] = move.piece;
+
+    if (move.eliminate) {
+        for (int i = 0; i < player->opponent->pieces.size(); i++) {
+            if (player->opponent->pieces[i] == move.eliminate) {
+                player->opponent->pieces.erase(player->opponent->pieces.begin() + i);
+            }
+        }
+
+        player->opponent->matrix[move.eliminate->pos] = nullptr;
+    }    
 
     for (Piece* piece : player->opponent->pieces) {
         std::vector<Move> moves = piece->getMoves(player->opponent);
@@ -21,6 +31,12 @@ bool isValidMoveInCheck(Player* player, Move move) {
                     move.piece->pos = originalPos;
                     player->matrix[move.piece->pos] = move.piece;
                     player->matrix[move.pos] = nullptr;
+
+                    if (move.eliminate) {
+                        player->opponent->pieces.push_back(move.eliminate);
+                        player->opponent->matrix[move.eliminate->pos] = move.eliminate;
+                    } 
+
                     cout << "ay gang wsg" << endl;
                     return false;
                 }
@@ -32,7 +48,10 @@ bool isValidMoveInCheck(Player* player, Move move) {
     player->matrix[move.piece->pos] = move.piece;
     player->matrix[move.pos] = nullptr;
 
-    cout << "no way omg" << endl;
+    if (move.eliminate) {
+        player->opponent->pieces.push_back(move.eliminate);
+        player->opponent->matrix[move.eliminate->pos] = move.eliminate;
+    } 
     
     return true;
 }
