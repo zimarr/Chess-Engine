@@ -75,6 +75,7 @@ void Chess::mouseClick(SDL_Event e) {
                 }
 
                 checkForCheck(play);
+                checkForCheck(play->opponent);
             }
             
             white.matrix.reset();

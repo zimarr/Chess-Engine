@@ -7,7 +7,7 @@ functionality
 * check detection
     - check if enemy in check after move
     - check if player in check after move
-- force to get out of check
+* force to get out of check
 - checkmate detection
 - add en peassanenteadf
 - add rook thing
