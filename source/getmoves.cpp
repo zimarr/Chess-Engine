@@ -7,7 +7,9 @@
 using namespace std;
 
 bool isValidMoveInCheck(Player* player, Move move) {
+    cout << "called" << endl;
     Position originalPos = move.piece->pos;
+
 
     player->matrix[move.piece->pos] = nullptr;
     move.piece->pos = move.pos;
@@ -98,14 +100,18 @@ std::vector<Move> Pawn::getMoves(Player* player) {
         moves.push_back(Move(upRightPos, this, player->opponent->matrix[upRightPos]));
     }
 
-    if (player->inCheck) {
+    if (player->makingMove) {
+        player->makingMove = false;
+
         std::vector<Move> actualMoves;
-    
+        
         for (Move& move : moves) {
             if (isValidMoveInCheck(player, move)) {
                 actualMoves.push_back(move);
             }
         }
+
+        player->makingMove = true;
 
         return actualMoves;
     }
@@ -139,7 +145,9 @@ std::vector<Move> Knight::getMoves(Player* player) {
         }
     }
 
-    if (player->inCheck) {
+    if (player->makingMove) {
+        player->makingMove = false;
+        
         std::vector<Move> actualMoves;
     
         for (Move& move : checkedMoves) {
@@ -147,6 +155,8 @@ std::vector<Move> Knight::getMoves(Player* player) {
                 actualMoves.push_back(move);
             }
         }
+
+        player->makingMove = true;
 
         return actualMoves;
     }
@@ -211,7 +221,9 @@ std::vector<Move> Bishop::getMoves(Player* player) {
         moves.push_back(Move(p, this));
     }
 
-    if (player->inCheck) {
+    if (player->makingMove) {
+        player->makingMove = false;
+        
         std::vector<Move> actualMoves;
     
         for (Move& move : moves) {
@@ -219,6 +231,8 @@ std::vector<Move> Bishop::getMoves(Player* player) {
                 actualMoves.push_back(move);
             }
         }
+
+        player->makingMove = true;
 
         return actualMoves;
     }
@@ -281,7 +295,9 @@ std::vector<Move> Rook::getMoves(Player* player) {
         moves.push_back(Move(p, this));
     }
 
-    if (player->inCheck) {
+    if (player->makingMove) {
+        player->makingMove = false;
+        
         std::vector<Move> actualMoves;
     
         for (Move& move : moves) {
@@ -289,6 +305,8 @@ std::vector<Move> Rook::getMoves(Player* player) {
                 actualMoves.push_back(move);
             }
         }
+
+        player->makingMove = true;
 
         return actualMoves;
     }
@@ -403,7 +421,9 @@ std::vector<Move> Queen::getMoves(Player* player) {
         moves.push_back(Move(p, this));
     }
 
-    if (player->inCheck) {
+    if (player->makingMove) {
+        player->makingMove = false;
+        
         std::vector<Move> actualMoves;
     
         for (Move& move : moves) {
@@ -411,6 +431,8 @@ std::vector<Move> Queen::getMoves(Player* player) {
                 actualMoves.push_back(move);
             }
         }
+
+        player->makingMove = true;
 
         return actualMoves;
     }
@@ -444,7 +466,9 @@ std::vector<Move> King::getMoves(Player* player) {
         }
     }
 
-    if (player->inCheck) {
+    if (player->makingMove) {
+        player->makingMove = false;
+        
         std::vector<Move> actualMoves;
     
         for (Move& move : checkedMoves) {
@@ -452,6 +476,8 @@ std::vector<Move> King::getMoves(Player* player) {
                 actualMoves.push_back(move);
             }
         }
+
+        player->makingMove = true;
 
         return actualMoves;
     }

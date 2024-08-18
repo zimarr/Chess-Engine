@@ -5,8 +5,8 @@ functionality
 * color pieces
 * don't let pieces overlap with enemy pieces
 * check detection
-    - check if enemy in check after move
-    - check if player in check after move
+    * check if enemy in check after move
+    * check if player in check after move
 * force to get out of check
 - checkmate detection
 - add en peassanenteadf

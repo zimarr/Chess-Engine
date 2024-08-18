@@ -23,6 +23,8 @@ class Player {
 
         bool inCheck = false;
 
+        bool makingMove = true;
+
     private:
 
 };
