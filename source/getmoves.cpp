@@ -7,7 +7,6 @@
 using namespace std;
 
 bool isValidMoveInCheck(Player* player, Move move) {
-    cout << "called" << endl;
     Position originalPos = move.piece->pos;
 
 
@@ -58,7 +57,7 @@ bool isValidMoveInCheck(Player* player, Move move) {
     return true;
 }
 
-bool checkEnemy(Player* opponent, Position pos) {
+bool checkEnemy(Player* opponent, Position pos) {       // useless function
     if (opponent->matrix[pos] != nullptr) {
         return true;
     }

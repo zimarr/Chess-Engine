@@ -44,15 +44,22 @@ void Chess::mouseClick(SDL_Event e) {
 
     if (clickedPiece != play->selecting) {
         if (clickedPiece) {
+            play->makingMove = true;
+            
             play->selecting = clickedPiece;
             moves = clickedPiece->getMoves(play);
+
+            play->makingMove = false;
             
             // cout << "moves: ";    
             // for (Move move : moves) {
+            //     if (move.eliminate) {
+            //         cout << "takes ";
+            //     }
             //     cout << move.pos.col << move.pos.row << ", ";
             // }
-            // cout << endl;
-        } else {
+            cout << endl;
+        } else {            
             Position clickedPos = getClickedPosition(e.button.x, e.button.y);
             Move* validMove = nullptr;
 
@@ -74,6 +81,7 @@ void Chess::mouseClick(SDL_Event e) {
                         }
                     }
                 }
+
                 checkForCheck(play->opponent);
                 checkForCheck(play);
             }
