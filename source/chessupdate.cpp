@@ -60,7 +60,7 @@ void Chess::mouseClick(SDL_Event e) {
             //     }
             //     cout << move.pos.col << move.pos.row << ", ";
             // }
-            cout << endl;
+            // cout << endl;
         } else {            
             Position clickedPos = getClickedPosition(e.button.x, e.button.y);
             Move* validMove = nullptr;
@@ -87,8 +87,8 @@ void Chess::mouseClick(SDL_Event e) {
                 checkForCheck(play);
                 checkForCheck(play->opponent);
                 
-                checkCheckmate(play);
-                checkCheckmate(play->opponent);
+                checkCheckmate(&white);
+                // checkCheckmate(play->opponent);
             }
             
             white.matrix.reset();

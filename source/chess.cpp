@@ -27,12 +27,12 @@ void Chess::initPieces(SDL_Renderer *rend) {
     }
 
     //white knights
-    white.pieces.push_back(new Knight('C', 1, WHITE));
-    white.pieces.push_back(new Knight('F', 1, WHITE));
+    white.pieces.push_back(new Knight('B', 1, WHITE));
+    white.pieces.push_back(new Knight('G', 1, WHITE));
 
     //white bishops
-    white.pieces.push_back(new Bishop('B', 1, WHITE));
-    white.pieces.push_back(new Bishop('G', 1, WHITE));
+    white.pieces.push_back(new Bishop('C', 1, WHITE));
+    white.pieces.push_back(new Bishop('F', 1, WHITE));
 
     //white rooks    
     white.pieces.push_back(new Rook('A', 1, WHITE));
@@ -50,12 +50,12 @@ void Chess::initPieces(SDL_Renderer *rend) {
     }
 
     //black knights
-    black.pieces.push_back(new Knight('C', 8, BLACK));
-    black.pieces.push_back(new Knight('F', 8, BLACK));
+    black.pieces.push_back(new Knight('B', 8, BLACK));
+    black.pieces.push_back(new Knight('G', 8, BLACK));
 
     //black bishops
-    black.pieces.push_back(new Bishop('B', 8, BLACK));
-    black.pieces.push_back(new Bishop('G', 8, BLACK));
+    black.pieces.push_back(new Bishop('C', 8, BLACK));
+    black.pieces.push_back(new Bishop('F', 8, BLACK));
 
     //black rooks    
     black.pieces.push_back(new Rook('A', 8, BLACK));

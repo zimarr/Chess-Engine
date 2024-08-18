@@ -7,14 +7,18 @@
 using namespace std;
 
 void checkCheckmate(Player* player) {
+    player->makingMove = true;
+
     for (Piece* piece : player->pieces) {
         std::vector<Move> moves = piece->getMoves(player);
         
         if (moves.size() > 0) {
+            player->makingMove = false;
             return;
         }
     }
 
+    player->makingMove = false;
     player->inCheckmate = true;
 }
 
