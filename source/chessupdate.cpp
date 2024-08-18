@@ -6,7 +6,7 @@
 
 using namespace std; // remove later
 
-void Chess::switchTurns() {
+void Chess::switchTurns() {     // fix this
     (play == &white) ? play = &black : play = &white;
 }
 
@@ -67,19 +67,24 @@ void Chess::mouseClick(SDL_Event e) {
                 play->selecting->pos = clickedPos;      // make move, change pos, change moved bool
                 play->selecting->moved = true;
                 if (validMove->eliminate) {
+                    cout << "white piece count: " << white.pieces.size() << endl;
                     for (int i = 0; i < play->opponent->pieces.size(); i++) {
                         if (play->opponent->pieces[i] == validMove->eliminate) {
                             play->opponent->pieces.erase(play->opponent->pieces.begin() + i);
+                            break;
                         }
                     }
+                    cout << "white piece count: " << white.pieces.size() << endl;
                 }
-
+                cout << endl << white.pieces.size() << endl << endl;
                 checkForCheck(play);
+                cout << endl << white.pieces.size() << endl << endl;
                 checkForCheck(play->opponent);
+                cout << endl << white.pieces.size() << endl << endl;
             }
             
             white.matrix.reset();
-
+            cout << endl << white.pieces.size() << endl << endl;
             for (Piece* piece : white.pieces) {
                 white.matrix[piece->pos] = piece;
             }
@@ -103,6 +108,8 @@ void Chess::mouseClick(SDL_Event e) {
 }
 
 void Chess::checkForCheck(Player* player) {
+    player->opponent->inCheck = false;
+    // NOTE: ERROR HERE!!
     for (Piece* piece : player->pieces) {
         std::vector<Move> moves = piece->getMoves(player);
         for (Move& move : moves) {
@@ -115,8 +122,6 @@ void Chess::checkForCheck(Player* player) {
             }
         }
     }
-
-    player->opponent->inCheck = false;
 }
 
 
@@ -131,19 +136,18 @@ void Chess::mouseRelease(SDL_Event e) {
 
 void Chess::update() {
     
-    // for (auto& row : white.matrix.matrix) {
-    //     for (Piece* piece : row) {
-    //         if (!piece) {
-    //             cout << "o ";
-    //         } else {
-    //             cout << "x ";
-    //         }
-    //     }
-    //     cout << endl;
+    // if (SDL_ == 0) {
+    for (auto& row : white.matrix.matrix) {
+        for (Piece* piece : row) {
+            if (!piece) {
+                cout << "o ";
+            } else {
+                cout << "x ";
+            }
+        }
+        cout << endl;
+    }
+
+    cout << endl;
     // }
-
-    // cout << endl;
-
-
-
 }

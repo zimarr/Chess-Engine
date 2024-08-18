@@ -37,7 +37,6 @@ bool isValidMoveInCheck(Player* player, Move move) {
                         player->opponent->matrix[move.eliminate->pos] = move.eliminate;
                     } 
 
-                    cout << "ay gang wsg" << endl;
                     return false;
                 }
             }
@@ -51,6 +50,7 @@ bool isValidMoveInCheck(Player* player, Move move) {
     if (move.eliminate) {
         player->opponent->pieces.push_back(move.eliminate);
         player->opponent->matrix[move.eliminate->pos] = move.eliminate;
+        // cout << "added back" << "total pieces: " << player->opponent->pieces.size() << endl;
     } 
     
     return true;
