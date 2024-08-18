@@ -22,6 +22,7 @@ class Player {
         Color color;
 
         bool inCheck = false;
+        bool inCheckmate = false;
 
         bool makingMove = false;
 

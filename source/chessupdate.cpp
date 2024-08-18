@@ -6,13 +6,15 @@
 
 using namespace std; // remove later
 
+void checkCheckmate(Player* player); // clean this up
+
 void Chess::switchTurns() {     // fix this
     (play == &white) ? play = &black : play = &white;
 }
 
 void Chess::drawMoves() {
     for (Move move : moves) {
-        SDL_Rect rect{move.pos.getXPos(play->color, flipEnabled), move.pos.getYPos(play->color, flipEnabled), 100, 100};
+        SDL_Rect rect{move.nextPos.getXPos(play->color, flipEnabled), move.nextPos.getYPos(play->color, flipEnabled), 100, 100};
         if (move.eliminate) {
             SDL_RenderCopy(Piece::rend, Textures::movetake, NULL, &rect);
         } else {    
@@ -64,7 +66,7 @@ void Chess::mouseClick(SDL_Event e) {
             Move* validMove = nullptr;
 
             for (Move move : moves) {
-                if (move.pos.col == clickedPos.col && move.pos.row == clickedPos.row) { // add operator for this
+                if (move.nextPos.col == clickedPos.col && move.nextPos.row == clickedPos.row) { // add operator for this
                     validMove = &move;
                     break;
                 }
@@ -82,8 +84,11 @@ void Chess::mouseClick(SDL_Event e) {
                     }
                 }
 
-                checkForCheck(play->opponent);
                 checkForCheck(play);
+                checkForCheck(play->opponent);
+                
+                checkCheckmate(play);
+                checkCheckmate(play->opponent);
             }
             
             white.matrix.reset();
@@ -112,7 +117,7 @@ void Chess::mouseClick(SDL_Event e) {
 
 void Chess::checkForCheck(Player* player) {
     player->opponent->inCheck = false;
-    // NOTE: ERROR HERE!!
+    
     for (Piece* piece : player->pieces) {
         std::vector<Move> moves = piece->getMoves(player);
         for (Move& move : moves) {
@@ -137,6 +142,15 @@ void Chess::mouseRelease(SDL_Event e) {
 
 
 void Chess::update() {
+    
+    if (white.inCheckmate) {
+        cout << "BLACK WINS" << endl;
+    }
+
+    if (black.inCheckmate) {
+        cout << "WHITE WINS" << endl;
+    }
+
 
     // for (auto& row : white.matrix.matrix) {
     //     for (Piece* piece : row) {

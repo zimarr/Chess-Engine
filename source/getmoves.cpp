@@ -6,13 +6,22 @@
 
 using namespace std;
 
-bool isValidMoveInCheck(Player* player, Move move) {
-    Position originalPos = move.piece->pos;
+void checkCheckmate(Player* player) {
+    for (Piece* piece : player->pieces) {
+        std::vector<Move> moves = piece->getMoves(player);
+        
+        if (moves.size() > 0) {
+            return;
+        }
+    }
 
+    player->inCheckmate = true;
+}
 
+void doMove(Player* player, Move move) {
     player->matrix[move.piece->pos] = nullptr;
-    move.piece->pos = move.pos;
-    player->matrix[move.pos] = move.piece;
+    move.piece->pos = move.nextPos;
+    player->matrix[move.nextPos] = move.piece;
 
     if (move.eliminate) {
         for (int i = 0; i < player->opponent->pieces.size(); i++) {
@@ -22,21 +31,29 @@ bool isValidMoveInCheck(Player* player, Move move) {
         }
 
         player->opponent->matrix[move.eliminate->pos] = nullptr;
-    }    
+    }
+}
+
+void undoMove(Player* player, Move move) {
+    move.piece->pos = move.startPos;
+    player->matrix[move.piece->pos] = move.piece;
+    player->matrix[move.nextPos] = nullptr;
+
+    if (move.eliminate) {
+        player->opponent->pieces.push_back(move.eliminate);
+        player->opponent->matrix[move.eliminate->pos] = move.eliminate;
+    } 
+}
+
+bool isValidMoveInCheck(Player* player, Move move) {
+    doMove(player, move);
 
     for (Piece* piece : player->opponent->pieces) {
         std::vector<Move> moves = piece->getMoves(player->opponent);
         for (Move& enemyMove : moves) {
             if (enemyMove.eliminate) {
                 if (enemyMove.eliminate->isKing) {
-                    move.piece->pos = originalPos;
-                    player->matrix[move.piece->pos] = move.piece;
-                    player->matrix[move.pos] = nullptr;
-
-                    if (move.eliminate) {
-                        player->opponent->pieces.push_back(move.eliminate);
-                        player->opponent->matrix[move.eliminate->pos] = move.eliminate;
-                    } 
+                    undoMove(player, move);
 
                     return false;
                 }
@@ -44,15 +61,7 @@ bool isValidMoveInCheck(Player* player, Move move) {
         }
     }
 
-    move.piece->pos = originalPos;
-    player->matrix[move.piece->pos] = move.piece;
-    player->matrix[move.pos] = nullptr;
-
-    if (move.eliminate) {
-        player->opponent->pieces.push_back(move.eliminate);
-        player->opponent->matrix[move.eliminate->pos] = move.eliminate;
-        // cout << "added back" << "total pieces: " << player->opponent->pieces.size() << endl;
-    } 
+    undoMove(player, move);
     
     return true;
 }
@@ -83,7 +92,7 @@ std::vector<Move> Pawn::getMoves(Player* player) {
             break;
         }
 
-        moves.push_back(Move(p, this));   
+        moves.push_back(Move(pos, p, this));   
     }
 
     // get enemies
@@ -91,12 +100,12 @@ std::vector<Move> Pawn::getMoves(Player* player) {
     
     Position upLeftPos(pos.col - 1, pos.row + 1 * player->color);
     if (upLeftPos.inBounds() && checkEnemy(player->opponent, upLeftPos)) {
-        moves.push_back(Move(upLeftPos, this, player->opponent->matrix[upLeftPos]));
+        moves.push_back(Move(pos, upLeftPos, this, player->opponent->matrix[upLeftPos]));
     }
 
     Position upRightPos(pos.col + 1, pos.row + 1 * player->color);
     if (upRightPos.inBounds() && checkEnemy(player->opponent, upRightPos)) {
-        moves.push_back(Move(upRightPos, this, player->opponent->matrix[upRightPos]));
+        moves.push_back(Move(pos, upRightPos, this, player->opponent->matrix[upRightPos]));
     }
 
     if (player->makingMove) {
@@ -122,24 +131,24 @@ std::vector<Move> Knight::getMoves(Player* player) {
     vector<Move> moves;
 
     // check for collision/out of bounds etc
-    moves.push_back(Move(Position(pos.col + 1, pos.row + 2), this));
-    moves.push_back(Move(Position(pos.col - 1, pos.row + 2), this));
-    moves.push_back(Move(Position(pos.col + 1, pos.row - 2), this));
-    moves.push_back(Move(Position(pos.col - 1, pos.row - 2), this));
-    moves.push_back(Move(Position(pos.col + 2, pos.row + 1), this));
-    moves.push_back(Move(Position(pos.col + 2, pos.row - 1), this));
-    moves.push_back(Move(Position(pos.col - 2, pos.row + 1), this));
-    moves.push_back(Move(Position(pos.col - 2, pos.row - 1), this));
+    moves.push_back(Move(pos, Position(pos.col + 1, pos.row + 2), this));
+    moves.push_back(Move(pos, Position(pos.col - 1, pos.row + 2), this));
+    moves.push_back(Move(pos, Position(pos.col + 1, pos.row - 2), this));
+    moves.push_back(Move(pos, Position(pos.col - 1, pos.row - 2), this));
+    moves.push_back(Move(pos, Position(pos.col + 2, pos.row + 1), this));
+    moves.push_back(Move(pos, Position(pos.col + 2, pos.row - 1), this));
+    moves.push_back(Move(pos, Position(pos.col - 2, pos.row + 1), this));
+    moves.push_back(Move(pos, Position(pos.col - 2, pos.row - 1), this));
 
     //experimental
     vector<Move> checkedMoves;
 
     for (Move move : moves) {
-        if (move.pos.inBounds() && !player->matrix[move.pos]) {
-            if (checkEnemy(player->opponent, move.pos)) {
-                checkedMoves.push_back(Move(move.pos, this, player->opponent->matrix[move.pos]));
+        if (move.nextPos.inBounds() && !player->matrix[move.nextPos]) {
+            if (checkEnemy(player->opponent, move.nextPos)) {
+                checkedMoves.push_back(Move(pos, move.nextPos, this, player->opponent->matrix[move.nextPos]));
             } else {
-                checkedMoves.push_back(Move(move.pos, this));
+                checkedMoves.push_back(Move(pos, move.nextPos, this));
             }
         }
     }
@@ -175,10 +184,10 @@ std::vector<Move> Bishop::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // up right
@@ -188,10 +197,10 @@ std::vector<Move> Bishop::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // down left
@@ -201,10 +210,10 @@ std::vector<Move> Bishop::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // down right
@@ -214,10 +223,10 @@ std::vector<Move> Bishop::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     if (player->makingMove) {
@@ -249,10 +258,10 @@ std::vector<Move> Rook::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // down
@@ -262,10 +271,10 @@ std::vector<Move> Rook::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // left
@@ -275,10 +284,10 @@ std::vector<Move> Rook::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // right
@@ -288,10 +297,10 @@ std::vector<Move> Rook::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     if (player->makingMove) {
@@ -323,10 +332,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // up right
@@ -336,10 +345,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // down left
@@ -349,10 +358,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // down right
@@ -362,10 +371,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // up
@@ -375,10 +384,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // down
@@ -388,10 +397,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // left
@@ -401,10 +410,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     // right
@@ -414,10 +423,10 @@ std::vector<Move> Queen::getMoves(Player* player) {
             break;
         }
         if (checkEnemy(player->opponent, p)) {
-            moves.push_back(Move(p, this, player->opponent->matrix[p]));
+            moves.push_back(Move(pos, p, this, player->opponent->matrix[p]));
             break;
         }
-        moves.push_back(Move(p, this));
+        moves.push_back(Move(pos, p, this));
     }
 
     if (player->makingMove) {
@@ -442,25 +451,25 @@ std::vector<Move> Queen::getMoves(Player* player) {
 std::vector<Move> King::getMoves(Player* player) {
     vector<Move> moves;
 
-    moves.push_back(Move(Position(pos.col + 1, pos.row + 1), this));
-    moves.push_back(Move(Position(pos.col + 1, pos.row - 1), this));
-    moves.push_back(Move(Position(pos.col - 1, pos.row + 1), this));
-    moves.push_back(Move(Position(pos.col - 1, pos.row - 1), this));
+    moves.push_back(Move(pos, Position(pos.col + 1, pos.row + 1), this));
+    moves.push_back(Move(pos, Position(pos.col + 1, pos.row - 1), this));
+    moves.push_back(Move(pos, Position(pos.col - 1, pos.row + 1), this));
+    moves.push_back(Move(pos, Position(pos.col - 1, pos.row - 1), this));
 
-    moves.push_back(Move(Position(pos.col + 1, pos.row), this));
-    moves.push_back(Move(Position(pos.col - 1, pos.row), this));
-    moves.push_back(Move(Position(pos.col, pos.row + 1), this));
-    moves.push_back(Move(Position(pos.col, pos.row - 1), this));
+    moves.push_back(Move(pos, Position(pos.col + 1, pos.row), this));
+    moves.push_back(Move(pos, Position(pos.col - 1, pos.row), this));
+    moves.push_back(Move(pos, Position(pos.col, pos.row + 1), this));
+    moves.push_back(Move(pos, Position(pos.col, pos.row - 1), this));
 
     //experimental
     vector<Move> checkedMoves;
 
     for (Move move : moves) {
-        if (move.pos.inBounds() && !player->matrix[move.pos]) {
-            if (checkEnemy(player->opponent, move.pos)) {
-                checkedMoves.push_back(Move(move.pos, this, player->opponent->matrix[move.pos]));
+        if (move.nextPos.inBounds() && !player->matrix[move.nextPos]) {
+            if (checkEnemy(player->opponent, move.nextPos)) {
+                checkedMoves.push_back(Move(pos, move.nextPos, this, player->opponent->matrix[move.nextPos]));
             } else {
-                checkedMoves.push_back(Move(move.pos, this));
+                checkedMoves.push_back(Move(pos, move.nextPos, this));
             }
         }
     }
