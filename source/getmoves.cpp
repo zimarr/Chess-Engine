@@ -64,7 +64,7 @@ bool checkEnemy(Player* opponent, Position pos) {
 }
 
 std::vector<Move> Piece::getMoves(Player* player) {
-    cout << "invalid thang" << endl;
+    cout << "ERROR - Piece::getMoves was called" << endl;
     
     return {};
 }
