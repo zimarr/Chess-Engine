@@ -52,13 +52,13 @@ void Chess::mouseClick(SDL_Event e) {
             moves = clickedPiece->getMoves(play);
 
             play->makingMove = false;
-            
-            // cout << "moves: ";    
+            cout << endl;
+            cout << "moves: ";    
             // for (Move move : moves) {
             //     if (move.eliminate) {
             //         cout << "takes ";
             //     }
-            //     cout << move.pos.col << move.pos.row << ", ";
+            //     cout << move.nextPos.col << move.nextPos.row << ", ";
             // }
             // cout << endl;
         } else {            

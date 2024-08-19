@@ -28,6 +28,8 @@ class Piece {
         bool moved = false;
 
         bool isKing = false;
+        bool isRook = false;
+        bool isPawn = false;
 
         static SDL_Renderer *rend;
 };

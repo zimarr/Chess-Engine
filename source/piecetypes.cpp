@@ -10,6 +10,8 @@ Pawn::Pawn(char  c, int r, Color clr) {
     
     color = clr;
 
+    isPawn = true;
+
     texture = IMG_LoadTexture(Piece::rend, "./res/pawn.png");
 
     if (!(texture)) {
@@ -45,6 +47,8 @@ Rook::Rook(char  c, int r, Color clr) {
     pos = Position(c, r);
 
     color = clr;
+
+    isRook = true;
     
     texture = IMG_LoadTexture(Piece::rend, "./res/rook.png");
 

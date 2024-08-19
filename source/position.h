@@ -2,6 +2,9 @@
 
 #include "classifier.h"
 
+class Player;
+class Piece;
+
 class Position {
     public:
         Position();
@@ -15,7 +18,9 @@ class Position {
         char col;
         int row;
         
+        bool isAttacked(Player* enemy);
 
+        bool operator==(const Position& other) const;
 
     private:
 

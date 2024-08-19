@@ -8,8 +8,8 @@ struct Move {
     Move(Position sp, Position np, Piece* p = nullptr, Piece* elim = nullptr) { // add elem param
         startPos = sp;
         nextPos = np;
-        eliminate = elim;
         piece = p;
+        eliminate = elim;
     }
 
     Position startPos;

@@ -8,11 +8,13 @@ functionality
     * check if enemy in check after move
     * check if player in check after move
 * force to get out of check
-- checkmate detection
+* checkmate detection
 - add en peassanenteadf
 - add rook thing
 - add pawn turning into queen/knight etc
 - add piece dragging
+- add end screen
+- highlight when piece is in check/checkmate
 
 style
 - add all textures to namespace

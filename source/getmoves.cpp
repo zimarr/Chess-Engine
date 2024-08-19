@@ -6,6 +6,10 @@
 
 using namespace std;
 
+int sign(int a) {
+    return (a < 0) ? -1 : 1;
+}
+
 void checkCheckmate(Player* player) {
     player->makingMove = true;
 
@@ -478,6 +482,33 @@ std::vector<Move> King::getMoves(Player* player) {
         }
     }
 
+    if (!moved) {
+        for (Piece* piece : player->pieces) {   // if rook hasnt moved, empty squares, king hasnt moved, any of the tiles arent attacked
+            if (piece->isRook) {
+                if (!piece->moved) {
+                    cout << endl;
+                    
+                    bool spaceIsValid = true;
+                    cout << sign(pos.col - piece->pos.col) << endl;
+                    for (char ch = piece->pos.col + sign(pos.col - piece->pos.col); ch != pos.col; ch += sign(pos.col - piece->pos.col)) {
+                        cout << ch << pos.row << endl;
+                        Position space(ch, pos.row);
+                        if (piece->pos.col != ch && (player->matrix[space] || player->opponent->matrix[space] || space.isAttacked(player->opponent))) {
+                            cout << "EERMM" << endl;
+                            spaceIsValid = false;
+                            break;
+                        }
+                    }
+
+                    if (spaceIsValid) {
+                        Position nextPos(pos.col + 2 * sign(piece->pos.col - pos.col), pos.row);
+                        cout << nextPos.col << nextPos.row << endl;
+                        checkedMoves.push_back(Move(pos, nextPos, this, nullptr));
+                    }
+                }
+            }
+        }
+    }
     if (player->makingMove) {
         player->makingMove = false;
         

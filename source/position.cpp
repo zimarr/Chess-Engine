@@ -1,4 +1,7 @@
+#include <vector>
 #include "position.h"
+#include "player.h"
+#include "move.h"
 
 Position::Position() {
     col = 'A';
@@ -28,4 +31,21 @@ int Position::getYPos(Color turn, bool flipEnabled) {
 
 bool Position::inBounds() {
     return col >= 'A' && col <= 'H' && row >= 1 && row <= 8;
+}
+
+bool Position::isAttacked(Player* enemy) {
+    for (Piece* piece : enemy->pieces) {
+        std::vector<Move> moves = piece->getMoves(enemy);
+        for (Move move : moves) {
+            if (move.nextPos == *this) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Position::operator==(const Position& other) const {
+    return col == other.col && row == other.row;
 }
