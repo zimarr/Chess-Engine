@@ -54,14 +54,14 @@ void undoMove(Player* player, Move move) {
 }
 
 bool isValidMoveInCheck(Player* player, Move move) {
-    doMove(player, move);
+    move.make(player);
 
     for (Piece* piece : player->opponent->pieces) {
         std::vector<Move> moves = piece->getMoves(player->opponent);
         for (Move& enemyMove : moves) {
             if (enemyMove.eliminate) {
                 if (enemyMove.eliminate->isKing) {
-                    undoMove(player, move);
+                    move.undo(player);
 
                     return false;
                 }
@@ -69,7 +69,7 @@ bool isValidMoveInCheck(Player* player, Move move) {
         }
     }
 
-    undoMove(player, move);
+    move.undo(player);
     
     return true;
 }
@@ -486,24 +486,19 @@ std::vector<Move> King::getMoves(Player* player) {
         for (Piece* piece : player->pieces) {   // if rook hasnt moved, empty squares, king hasnt moved, any of the tiles arent attacked
             if (piece->isRook) {
                 if (!piece->moved) {
-                    cout << endl;
-                    
                     bool spaceIsValid = true;
-                    cout << sign(pos.col - piece->pos.col) << endl;
                     for (char ch = piece->pos.col + sign(pos.col - piece->pos.col); ch != pos.col; ch += sign(pos.col - piece->pos.col)) {
-                        cout << ch << pos.row << endl;
                         Position space(ch, pos.row);
                         if (piece->pos.col != ch && (player->matrix[space] || player->opponent->matrix[space] || space.isAttacked(player->opponent))) {
-                            cout << "EERMM" << endl;
                             spaceIsValid = false;
                             break;
                         }
                     }
 
                     if (spaceIsValid) {
-                        Position nextPos(pos.col + 2 * sign(piece->pos.col - pos.col), pos.row);
-                        cout << nextPos.col << nextPos.row << endl;
-                        checkedMoves.push_back(Move(pos, nextPos, this, nullptr));
+                        Position kingNextPos(pos.col + 2 * sign(piece->pos.col - pos.col), pos.row);
+                        Position rookNextPos(pos.col + sign(piece->pos.col - pos.col), pos.row);
+                        checkedMoves.push_back(Move(pos, kingNextPos, this, piece->pos, rookNextPos, piece));
                     }
                 }
             }

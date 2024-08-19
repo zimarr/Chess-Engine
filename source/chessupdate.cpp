@@ -52,29 +52,21 @@ void Chess::mouseClick(SDL_Event e) {
             moves = clickedPiece->getMoves(play);
 
             play->makingMove = false;
-            cout << endl;
-            cout << "moves: ";    
-            // for (Move move : moves) {
-            //     if (move.eliminate) {
-            //         cout << "takes ";
-            //     }
-            //     cout << move.nextPos.col << move.nextPos.row << ", ";
-            // }
-            // cout << endl;
         } else {            
             Position clickedPos = getClickedPosition(e.button.x, e.button.y);
             Move* validMove = nullptr;
 
             for (Move move : moves) {
-                if (move.nextPos.col == clickedPos.col && move.nextPos.row == clickedPos.row) { // add operator for this
+                if (move.nextPos == clickedPos) { // add operator for this
                     validMove = &move;
                     break;
                 }
             }
             
             if (validMove) {
-                play->selecting->pos = clickedPos;      // make move, change pos, change moved bool
+                validMove->make(play); // make move, change pos, change moved bool
                 play->selecting->moved = true;
+                
                 if (validMove->eliminate) {
                     for (int i = 0; i < play->opponent->pieces.size(); i++) {
                         if (play->opponent->pieces[i] == validMove->eliminate) {
@@ -87,20 +79,8 @@ void Chess::mouseClick(SDL_Event e) {
                 checkForCheck(play);
                 checkForCheck(play->opponent);
                 
-                checkCheckmate(&white);
-                // checkCheckmate(play->opponent);
-            }
-            
-            white.matrix.reset();
-
-            for (Piece* piece : white.pieces) {
-                white.matrix[piece->pos] = piece;
-            }
-
-            black.matrix.reset();
-
-            for (Piece* piece : black.pieces) {
-                black.matrix[piece->pos] = piece;
+                checkCheckmate(play);
+                checkCheckmate(play->opponent);
             }
 
             play->selecting = nullptr;  // unselect when clicked no piece
