@@ -100,11 +100,13 @@ std::vector<Move> Pawn::getMoves(Player* player) {
             break;
         }
 
-        moves.push_back(Move(pos, p, this));   
+        Move move(pos, p, this);
+        
+        
+        move.enPassantable = step - 1;
+            
+        moves.push_back(move);
     }
-
-    // get enemies
-    // add en peassantefafeav
     
     Position upLeftPos(pos.col - 1, pos.row + 1 * player->color);
     if (upLeftPos.inBounds() && checkEnemy(player->opponent, upLeftPos)) {
@@ -114,6 +116,13 @@ std::vector<Move> Pawn::getMoves(Player* player) {
     Position upRightPos(pos.col + 1, pos.row + 1 * player->color);
     if (upRightPos.inBounds() && checkEnemy(player->opponent, upRightPos)) {
         moves.push_back(Move(pos, upRightPos, this, player->opponent->matrix[upRightPos]));
+    }
+
+    if (player->opponent->enPassant) {
+        Piece* thePawn = player->opponent->enPassant;
+        if (pos == Position(thePawn->pos.col + 1, thePawn->pos.row) || pos == Position(thePawn->pos.col - 1, thePawn->pos.row)) {
+            moves.push_back(Move(pos, Position(thePawn->pos.col, thePawn->pos.row + player->color), this, thePawn));
+        }
     }
 
     if (player->makingMove) {

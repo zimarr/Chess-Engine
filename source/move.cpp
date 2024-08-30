@@ -17,6 +17,11 @@ void Move::make(Player* player) {
         player->matrix[castleNextPos] = castle;
     }
 
+    if (enPassantable) {
+        player->tempEnPassant = player->enPassant;
+        player->enPassant = piece;
+    }
+
     if (eliminate) {
         for (int i = 0; i < player->opponent->pieces.size(); i++) {
             if (player->opponent->pieces[i] == eliminate) {
@@ -25,7 +30,7 @@ void Move::make(Player* player) {
         }
 
         player->opponent->matrix[eliminate->pos] = nullptr;
-    }    
+    }
 }
 
 void Move::undo(Player* player) {
@@ -37,6 +42,11 @@ void Move::undo(Player* player) {
         castle->pos = castleStartPos;
         player->matrix[castle->pos] = castle;
         player->matrix[castleNextPos] = nullptr;
+    }
+
+    if (enPassantable) {
+        player->enPassant = player->tempEnPassant;
+        player->tempEnPassant = nullptr;
     }
 
     if (eliminate) {

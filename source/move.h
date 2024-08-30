@@ -30,6 +30,8 @@ class Move {
         Position castleNextPos;
         Piece* castle = nullptr;
 
+        bool enPassantable = false;
+
         void make(Player* player);
         void undo(Player* player);
 };

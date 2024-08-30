@@ -64,8 +64,11 @@ void Chess::mouseClick(SDL_Event e) {
             }
             
             if (validMove) {
-                validMove->make(play); // make move, change pos, change moved bool
+                validMove->make(play); // make move, change pos, change moved bool      
+                cout << "gra" << play->enPassant << endl;          
                 play->selecting->moved = true;
+                play->opponent->enPassant = nullptr;
+                play->opponent->tempEnPassant = nullptr;
                 
                 if (validMove->eliminate) {
                     for (int i = 0; i < play->opponent->pieces.size(); i++) {
@@ -131,6 +134,11 @@ void Chess::update() {
         cout << "WHITE WINS" << endl;
     }
 
+    cout << "white enPassant: " << white.enPassant << endl;
+    cout << "temp white enPassant: " << white.tempEnPassant << endl;
+
+    cout << "black enPassant: " << black.enPassant << endl;
+    cout << "temp black enPassant: " << black.tempEnPassant << endl;
 
     // for (auto& row : white.matrix.matrix) {
     //     for (Piece* piece : row) {
