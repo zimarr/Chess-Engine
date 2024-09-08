@@ -29,6 +29,10 @@ class Player {
         Piece* enPassant = nullptr;
         Piece* tempEnPassant = nullptr;
 
+        int points = 0;
+
+        Player* getCopy();
+
     private:
 
 };

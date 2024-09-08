@@ -2,7 +2,8 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-#include <vector> //maybe set?
+#include <vector>
+#include <stdexcept>
 #include "move.h"
 #include "position.h"
 #include "classifier.h"
@@ -17,6 +18,8 @@ class Piece {
 
         virtual std::vector<Move> getMoves(Player* player);
 
+        virtual Piece* clone() const { throw std::runtime_error("can't clone raw piece"); }
+
         Position pos;
 
         Color color;
@@ -30,6 +33,8 @@ class Piece {
         bool isKing = false;
         bool isRook = false;
         bool isPawn = false;
+
+        int value = 0;
 
         static SDL_Renderer *rend;
 };

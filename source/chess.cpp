@@ -69,10 +69,12 @@ void Chess::initPieces(SDL_Renderer *rend) {
 
     for (Piece* piece : white.pieces) {
         white.matrix[piece->pos] = piece;
+        white.points += piece->value;
     }
 
     for (Piece* piece : black.pieces) {
         black.matrix[piece->pos] = piece;
+        black.points += piece->value;
     }
 }
 

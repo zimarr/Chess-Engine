@@ -30,6 +30,8 @@ void Move::make(Player* player) {
         }
 
         player->opponent->matrix[eliminate->pos] = nullptr;
+
+        player->opponent->points -= eliminate->value;
     }
 }
 
@@ -52,5 +54,7 @@ void Move::undo(Player* player) {
     if (eliminate) {
         player->opponent->pieces.push_back(eliminate);
         player->opponent->matrix[eliminate->pos] = eliminate;
+
+        player->opponent->points += eliminate->value;
     } 
 }

@@ -41,6 +41,8 @@ Position Chess::getClickedPosition(int x, int y) {
     }
 }
 
+void simulate(Player* black, int step, std::vector<Move>& botMoves);
+
 void Chess::mouseClick(SDL_Event e) {
     Piece *clickedPiece = getClickedPiece(e.button.x, e.button.y);
 
@@ -65,7 +67,7 @@ void Chess::mouseClick(SDL_Event e) {
             
             if (validMove) {
                 validMove->make(play); // make move, change pos, change moved bool      
-                cout << "gra" << play->enPassant << endl;          
+                
                 play->selecting->moved = true;
                 play->opponent->enPassant = nullptr;
                 play->opponent->tempEnPassant = nullptr;
@@ -134,11 +136,16 @@ void Chess::update() {
         cout << "WHITE WINS" << endl;
     }
 
-    cout << "white enPassant: " << white.enPassant << endl;
-    cout << "temp white enPassant: " << white.tempEnPassant << endl;
+    // cout << white.pieces.size() << endl;
 
-    cout << "black enPassant: " << black.enPassant << endl;
-    cout << "temp black enPassant: " << black.tempEnPassant << endl;
+    // cout << "white: " << white.points << endl;
+    // cout << "black: " << black.points << endl;
+
+    // cout << "white enPassant: " << white.enPassant << endl;
+    // cout << "temp white enPassant: " << white.tempEnPassant << endl;
+
+    // cout << "black enPassant: " << black.enPassant << endl;
+    // cout << "temp black enPassant: " << black.tempEnPassant << endl;
 
     // for (auto& row : white.matrix.matrix) {
     //     for (Piece* piece : row) {
