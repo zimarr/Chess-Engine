@@ -3,6 +3,7 @@
 #include "textures.h"
 
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 ChessScreen::ChessScreen() {
     width = 0;
@@ -13,6 +14,10 @@ ChessScreen::ChessScreen() {
 void ChessScreen::init(const char title[], int x, int y, int w, int h, int flags) {
     if(SDL_Init(SDL_INIT_VIDEO)) {
         std::cout << "ERROR" << std::endl; return;
+    }
+
+    if (TTF_Init()) {
+        std::cout << "TTF_Init failed! TTF_Error: " << TTF_GetError() << std::endl;
     }
 
     window = SDL_CreateWindow("Thing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN);
@@ -41,11 +46,14 @@ void ChessScreen::init(const char title[], int x, int y, int w, int h, int flags
 
     SDL_FreeSurface(boardSurf);
 
+    panel = Panel(300, h);
+
     width = w;
     height = h;
     running = true;
     initTextures();
     chess.initPieces(rend);
+    panel.initTexts(rend);
 }
 
 void ChessScreen::initTextures() {
@@ -87,6 +95,7 @@ void ChessScreen::draw() {
     SDL_Rect destRect{0, 0, 800, 800};
     SDL_RenderCopy(rend, board, NULL, &destRect);
     chess.draw(rend);
+    panel.draw(rend);
 
     SDL_RenderPresent(rend);
 }

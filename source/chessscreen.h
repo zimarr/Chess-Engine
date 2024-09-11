@@ -1,7 +1,9 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "chess.h"
+#include "panel.h"
 
 class ChessScreen {
     public:
@@ -16,6 +18,7 @@ class ChessScreen {
         void quit() {};
 
         void draw();
+
         
 
     private:
@@ -33,5 +36,5 @@ class ChessScreen {
 
         bool running;
 
-
+        Panel panel;
 };
