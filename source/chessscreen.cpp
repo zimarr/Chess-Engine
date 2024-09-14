@@ -105,7 +105,7 @@ void ChessScreen::draw() {
     SDL_Rect destRect{panel.getWidth(), 0, 800, 800};
     SDL_RenderCopy(rend, board, NULL, &destRect);
 
-    chess.draw(rend, panel.getWidth());
+    chess.draw(rend, panel.getWidth(), panel.isShowMovesEnabled());
 
     SDL_Rect settingsrect{panel.getWidth(), 0, 50, 50};
     SDL_RenderCopy(rend, settingsbutton, NULL, &settingsrect);
