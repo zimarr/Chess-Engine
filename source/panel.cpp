@@ -3,7 +3,7 @@
 
 
 Panel::Panel(int w, int h) {
-    width = w;
+    width = 0;
     height = h;
 
     open = false;
@@ -49,10 +49,30 @@ void Panel::checkAllBoxes(int mousex, int mousey) {
 }
 
 void Panel::initTexts(SDL_Renderer* rend) {
-    addCheckBox(10, 100, rend, "MEOWWW");
-    addText(10, 10, rend, "GRRRRRRRRRAAAAAAA");
+    
+    
+    
+    addCheckBox(10, 100, rend, "Enable flipping");
 }
 
 void Panel::setOpen() {
     open = !open;
+
+    if (open) {
+        width = 300;
+    } else {
+        width = 0;
+    }
+}
+
+bool Panel::isOpen() {
+    return open;
+}
+
+int Panel::getWidth() {
+    return width;
+}
+
+int Panel::getHeight() {
+    return height;
 }

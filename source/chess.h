@@ -13,7 +13,7 @@ class Chess {
         
         void update();
 
-        void draw(SDL_Renderer *rend);
+        void draw(SDL_Renderer *rend, int left_padding);
 
         void initPieces(SDL_Renderer *rend);
     

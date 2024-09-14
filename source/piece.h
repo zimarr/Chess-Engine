@@ -26,7 +26,7 @@ class Piece {
 
         SDL_Texture *texture;
 
-        void draw(Color turn, bool flipEnabled);
+        void draw(Color turn, bool flipEnabled, int left_padding);
 
         bool moved = false;
 

@@ -102,12 +102,12 @@ void ChessScreen::draw() {
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
     SDL_RenderClear(rend);
 
-    SDL_Rect destRect{0, 0, 800, 800};
+    SDL_Rect destRect{panel.getWidth(), 0, 800, 800};
     SDL_RenderCopy(rend, board, NULL, &destRect);
 
-    chess.draw(rend);
+    chess.draw(rend, panel.getWidth());
 
-    SDL_Rect settingsrect{0, 0, 50, 50};
+    SDL_Rect settingsrect{panel.getWidth(), 0, 50, 50};
     SDL_RenderCopy(rend, settingsbutton, NULL, &settingsrect);
 
     panel.draw(rend);
@@ -130,8 +130,9 @@ void ChessScreen::handleEvents() {
         int x = e.button.x;
         int y = e.button.y;
 
-        if (x < 50 && y < 50) {
+        if (x < 50 + panel.getWidth() && x > panel.getWidth() && y < 50) {
             panel.setOpen();
+            SDL_SetWindowSize(window, width + panel.getWidth(), height);
         }
     }
 

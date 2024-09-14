@@ -82,15 +82,15 @@ void Chess::initPieces(SDL_Renderer *rend) {
 //     // call all logic stuffs
 // }
 
-void Chess::draw(SDL_Renderer *rend) {
+void Chess::draw(SDL_Renderer *rend, int left_padding) {
     SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
     
     for (Piece* piece : white.pieces) {
-        piece->draw(play->color, flipEnabled);
+        piece->draw(play->color, flipEnabled, left_padding);
     }
 
     for (Piece* piece : black.pieces) {
-        piece->draw(play->color, flipEnabled);
+        piece->draw(play->color, flipEnabled, left_padding);
     }
 
     drawMoves();

@@ -22,6 +22,9 @@ class Panel {
         void setOpen();
         bool isOpen();
         
+        int getWidth();
+        int getHeight();
+
     private:    
         TTF_Font* font;
         SDL_Texture* font_texture;
