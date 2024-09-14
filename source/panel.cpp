@@ -28,7 +28,7 @@ void Panel::draw(SDL_Renderer* rend) {
         return;
     }
     
-    SDL_SetRenderDrawColor(rend, 166, 255, 221, 255);
+    SDL_SetRenderDrawColor(rend, 50, 50, 50, 255);
     
     SDL_Rect rect{0, 0, width, height};
     SDL_RenderFillRect(rend, &rect);
@@ -49,10 +49,15 @@ void Panel::checkAllBoxes(int mousex, int mousey) {
 }
 
 void Panel::initTexts(SDL_Renderer* rend) {
-    
-    
-    
-    addCheckBox(10, 100, rend, "Enable flipping");
+    flip = new CheckBox(10, 100, "Flip board", font, rend);
+
+    show_moves = new CheckBox(10, 140, "Show possible moves", font, rend);
+
+    show_points = new CheckBox(10, 180, "Show points metere - WPI", font, rend);
+
+    checkboxes.push_back(flip);
+    checkboxes.push_back(show_moves);
+    checkboxes.push_back(show_points);
 }
 
 void Panel::setOpen() {

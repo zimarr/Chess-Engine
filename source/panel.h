@@ -25,6 +25,8 @@ class Panel {
         int getWidth();
         int getHeight();
 
+        CheckBox *flip, *show_moves, *show_points;
+
     private:    
         TTF_Font* font;
         SDL_Texture* font_texture;
