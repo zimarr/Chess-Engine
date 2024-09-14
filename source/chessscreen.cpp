@@ -60,10 +60,20 @@ void ChessScreen::initTextures() {
     Textures::move = IMG_LoadTexture(rend, "./res/move.png");
     
     if (!Textures::move) {
-        std::cout << "die" << std::endl;
+        std::cout << "ERROR" << std::endl;
     }
 
     Textures::movetake = IMG_LoadTexture(rend, "./res/movetake.png");
+
+    if (!Textures::movetake) {
+        std::cout << "ERROR" << std::endl;
+    }
+
+    settingsbutton = IMG_LoadTexture(rend, "./res/settingsbutton.png");
+
+    if (!settingsbutton) {
+        std::cout << "ERROR" << std::endl;
+    }
 }
 
 void ChessScreen::loop() {
@@ -94,7 +104,12 @@ void ChessScreen::draw() {
 
     SDL_Rect destRect{0, 0, 800, 800};
     SDL_RenderCopy(rend, board, NULL, &destRect);
+
     chess.draw(rend);
+
+    SDL_Rect settingsrect{0, 0, 50, 50};
+    SDL_RenderCopy(rend, settingsbutton, NULL, &settingsrect);
+
     panel.draw(rend);
 
     SDL_RenderPresent(rend);
@@ -110,6 +125,14 @@ void ChessScreen::handleEvents() {
 
     if (e.type == SDL_MOUSEBUTTONDOWN) {
         chess.mouseClick(e);
+        panel.checkAllBoxes(e.button.x, e.button.y);
+
+        int x = e.button.x;
+        int y = e.button.y;
+
+        if (x < 50 && y < 50) {
+            panel.setOpen();
+        }
     }
 
     if (e.type == SDL_MOUSEBUTTONUP) {

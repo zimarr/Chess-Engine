@@ -6,7 +6,9 @@ Panel::Panel(int w, int h) {
     width = w;
     height = h;
 
-    font = TTF_OpenFont("./res/fonts/open_sans.ttf", 13);
+    open = false;
+
+    font = TTF_OpenFont("./res/fonts/open_sans.ttf", 20);
     
     if (!font) {
         std::cout << "ERRRROR" << SDL_GetError() << std::endl; return;
@@ -22,6 +24,10 @@ void Panel::addCheckBox(int x, int y, SDL_Renderer* rend, const char *str) {
 }
 
 void Panel::draw(SDL_Renderer* rend) {
+    if (!open) {
+        return;
+    }
+    
     SDL_SetRenderDrawColor(rend, 166, 255, 221, 255);
     
     SDL_Rect rect{0, 0, width, height};
@@ -36,7 +42,17 @@ void Panel::draw(SDL_Renderer* rend) {
     }
 }
 
+void Panel::checkAllBoxes(int mousex, int mousey) {
+    for (CheckBox* check : checkboxes) {
+        check->click(mousex, mousey);
+    }
+}
+
 void Panel::initTexts(SDL_Renderer* rend) {
     addCheckBox(10, 100, rend, "MEOWWW");
     addText(10, 10, rend, "GRRRRRRRRRAAAAAAA");
+}
+
+void Panel::setOpen() {
+    open = !open;
 }

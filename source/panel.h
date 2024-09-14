@@ -17,9 +17,11 @@ class Panel {
 
         void addText(int x, int y, SDL_Renderer* rend, const char *str);
         void addCheckBox(int x, int y, SDL_Renderer* rend, const char *str);
-        
         void initTexts(SDL_Renderer* rend);
-
+        void checkAllBoxes(int mousex, int mousey);
+        void setOpen();
+        bool isOpen();
+        
     private:    
         TTF_Font* font;
         SDL_Texture* font_texture;
@@ -30,5 +32,5 @@ class Panel {
         int width;
         int height;
 
-
+        bool open;
 };

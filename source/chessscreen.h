@@ -31,6 +31,7 @@ class ChessScreen {
         SDL_Renderer *rend;
 
         SDL_Texture *board;
+        SDL_Texture *settingsbutton;
 
         Chess chess;
 

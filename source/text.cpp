@@ -3,9 +3,9 @@
 Text::Text(TTF_Font* font, SDL_Renderer* rend, int x_pos, int y_pos, const char *str) {
     x = x_pos;
     y = y_pos;
-    SDL_Color textColor = {255, 255, 255};
+    SDL_Color textColor = {0, 0, 0};
 
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, str, textColor);
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, str, textColor);
 
     if (!textSurface) {
         std::cout << "ERROR" << SDL_GetError() << std::endl;
