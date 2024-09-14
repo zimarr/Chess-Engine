@@ -17,6 +17,10 @@ void Panel::addText(int x, int y, SDL_Renderer* rend, const char *str) {
     texts.push_back(new Text(font, rend, x, y, str));
 }
 
+void Panel::addCheckBox(int x, int y, SDL_Renderer* rend, const char *str) {
+    checkboxes.push_back(new CheckBox(x, y, str, font, rend));
+}
+
 void Panel::draw(SDL_Renderer* rend) {
     SDL_SetRenderDrawColor(rend, 166, 255, 221, 255);
     
@@ -26,8 +30,13 @@ void Panel::draw(SDL_Renderer* rend) {
     for (Text* text : texts) {
         text->draw(rend);
     }
+
+    for (CheckBox* check : checkboxes) {
+        check->draw(rend);
+    }
 }
 
 void Panel::initTexts(SDL_Renderer* rend) {
+    addCheckBox(10, 100, rend, "MEOWWW");
     addText(10, 10, rend, "GRRRRRRRRRAAAAAAA");
 }

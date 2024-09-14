@@ -22,6 +22,6 @@ Text::Text(TTF_Font* font, SDL_Renderer* rend, int x_pos, int y_pos, const char 
 }
 
 void Text::draw(SDL_Renderer* rend) {
-    SDL_Rect dstRect {10, 10, width, height};
+    SDL_Rect dstRect {x, y, width, height};
     SDL_RenderCopy(rend, texture, NULL, &dstRect);
 }
