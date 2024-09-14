@@ -27,6 +27,10 @@ class Panel {
 
         CheckBox *flip, *show_moves, *show_points;
 
+        bool isFlipEnabled();
+        bool isShowMovesEnabled();
+        bool isPointMeterEnabled();
+
     private:    
         TTF_Font* font;
         SDL_Texture* font_texture;

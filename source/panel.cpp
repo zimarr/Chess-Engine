@@ -81,3 +81,15 @@ int Panel::getWidth() {
 int Panel::getHeight() {
     return height;
 }
+
+bool Panel::isFlipEnabled(){
+    return flip->isChecked();
+}
+
+bool Panel::isShowMovesEnabled(){
+    return show_moves->isChecked();
+}
+
+bool Panel::isPointMeterEnabled(){
+    return show_points->isChecked();
+}
