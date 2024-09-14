@@ -133,6 +133,7 @@ void ChessScreen::handleEvents() {
         if (x < 50 + panel.getWidth() && x > panel.getWidth() && y < 50) {
             panel.setOpen();
             SDL_SetWindowSize(window, width + panel.getWidth(), height);
+            SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         }
     }
 
