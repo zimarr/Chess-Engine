@@ -28,7 +28,7 @@ void Panel::draw(SDL_Renderer* rend) {
         return;
     }
     
-    SDL_SetRenderDrawColor(rend, 50, 50, 50, 255);
+    SDL_SetRenderDrawColor(rend, 50, 50, 50, 100);
     
     SDL_Rect rect{0, 0, width, height};
     SDL_RenderFillRect(rend, &rect);

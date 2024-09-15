@@ -54,6 +54,7 @@ void ChessScreen::init(const char title[], int x, int y, int w, int h, int flags
     initTextures();
     chess.initPieces(rend);
     panel.initTexts(rend);
+    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
 }
 
 void ChessScreen::initTextures() {
@@ -102,10 +103,10 @@ void ChessScreen::draw() {
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
     SDL_RenderClear(rend);
 
-    SDL_Rect destRect{panel.getWidth(), 0, 800, 800};
+    SDL_Rect destRect{0, 0, 800, 800};
     SDL_RenderCopy(rend, board, NULL, &destRect);
 
-    chess.draw(rend, panel.getWidth(), panel.isShowMovesEnabled());
+    chess.draw(rend, 0, panel.isShowMovesEnabled());
 
     SDL_Rect settingsrect{panel.getWidth(), 0, 50, 50};
     SDL_RenderCopy(rend, settingsbutton, NULL, &settingsrect);
@@ -127,13 +128,15 @@ void ChessScreen::handleEvents() {
         chess.mouseClick(e);
         panel.checkAllBoxes(e.button.x, e.button.y);
 
+        chess.flipEnabled = panel.isFlipEnabled();
+
         int x = e.button.x;
         int y = e.button.y;
 
         if (x < 50 + panel.getWidth() && x > panel.getWidth() && y < 50) {
             panel.setOpen();
-            SDL_SetWindowSize(window, width + panel.getWidth(), height);
-            SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+            // SDL_SetWindowSize(window, width + panel.getWidth(), height);
+            // SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
         }
     }
 
