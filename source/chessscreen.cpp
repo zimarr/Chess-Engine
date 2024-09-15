@@ -142,7 +142,9 @@ void ChessScreen::handleEvents() {
             chess.mouseClick(e);
         }
 
-        panel.checkAllBoxes(e.button.x, e.button.y);
+        if (panel.isOpen()) {
+            panel.checkAllBoxes(e.button.x, e.button.y);
+        }
 
         chess.flipEnabled = panel.isFlipEnabled();
     }
