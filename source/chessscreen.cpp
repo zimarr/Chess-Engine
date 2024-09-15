@@ -20,7 +20,7 @@ void ChessScreen::init(const char title[], int x, int y, int w, int h, int flags
         std::cout << "TTF_Init failed! TTF_Error: " << TTF_GetError() << std::endl;
     }
 
-    window = SDL_CreateWindow("Thing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Thing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_SHOWN | flags);
 
     if (!window) {
         std::cout << "ERROR" << std::endl; return;
