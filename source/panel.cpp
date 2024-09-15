@@ -52,6 +52,7 @@ void Panel::initTexts(SDL_Renderer* rend) {
     flip = new CheckBox(10, 100, "Flip board", font, rend);
 
     show_moves = new CheckBox(10, 140, "Show possible moves", font, rend);
+    show_moves->check();
 
     show_points = new CheckBox(10, 180, "Show points metere - WPI", font, rend);
 
