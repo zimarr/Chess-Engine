@@ -70,9 +70,15 @@ void ChessScreen::initTextures() {
         std::cout << "ERROR" << std::endl;
     }
 
-    settingsbutton = IMG_LoadTexture(rend, "./res/settingsbutton.png");
+    settingsbuttonclosed = IMG_LoadTexture(rend, "./res/settingsbuttonclosed.png");
 
-    if (!settingsbutton) {
+    if (!settingsbuttonclosed) {
+        std::cout << "ERROR" << std::endl;
+    }
+
+    settingsbuttonopen = IMG_LoadTexture(rend, "./res/settingsbuttonopen.png");
+
+    if (!settingsbuttonopen) {
         std::cout << "ERROR" << std::endl;
     }
 }
@@ -109,8 +115,13 @@ void ChessScreen::draw() {
     chess.draw(rend, 0, panel.isShowMovesEnabled());
 
     SDL_Rect settingsrect{panel.getWidth(), 0, 50, 50};
-    SDL_RenderCopy(rend, settingsbutton, NULL, &settingsrect);
-
+    
+    if (panel.isOpen()) {
+        SDL_RenderCopy(rend, settingsbuttonopen, NULL, &settingsrect);
+    } else {
+        SDL_RenderCopy(rend, settingsbuttonclosed, NULL, &settingsrect);
+    }
+    
     panel.draw(rend);
 
     SDL_RenderPresent(rend);
@@ -125,19 +136,15 @@ void ChessScreen::handleEvents() {
     }
 
     if (e.type == SDL_MOUSEBUTTONDOWN) {
-        chess.mouseClick(e);
+        if (e.button.x < 50 + panel.getWidth() && e.button.x > panel.getWidth() && e.button.y < 50) {
+            panel.setOpen();
+        } else if (!panel.isOpen()) {
+            chess.mouseClick(e);
+        }
+
         panel.checkAllBoxes(e.button.x, e.button.y);
 
         chess.flipEnabled = panel.isFlipEnabled();
-
-        int x = e.button.x;
-        int y = e.button.y;
-
-        if (x < 50 + panel.getWidth() && x > panel.getWidth() && y < 50) {
-            panel.setOpen();
-            // SDL_SetWindowSize(window, width + panel.getWidth(), height);
-            // SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-        }
     }
 
     if (e.type == SDL_MOUSEBUTTONUP) {
