@@ -21,7 +21,7 @@ CheckBox::CheckBox(int x_pos, int y_pos, const char *str, TTF_Font* font, SDL_Re
 
     texture = uncheckedtexture;
 
-    text = Text(font, rend, x_pos + 30, y_pos - 3, str);
+    text = Text(font, rend, x_pos + 55, y_pos - 3, str);
 }
 
 void CheckBox::check() {
@@ -31,7 +31,7 @@ void CheckBox::check() {
 }
 
 void CheckBox::click(int mousex, int mousey) {
-    if (mousex < x + 25 && mousex > x && mousey < y + 25 && mousey > y) {
+    if (mousex < x + 50 && mousex > x && mousey < y + 25 && mousey > y) {
         check();
     }
 }
@@ -46,7 +46,7 @@ void CheckBox::draw(SDL_Renderer *rend) {
     // SDL_Rect outerrect{x, y, 25, 25};
     // SDL_RenderFillRect(rend, &outerrect);
     
-    SDL_Rect rect{x, y, 25, 25};
+    SDL_Rect rect{x, y, 50, 25};
     SDL_RenderCopy(rend, texture, NULL, &rect);
 
     // SDL_SetRenderDrawColor(rend, 71, 255, 119, 255);
