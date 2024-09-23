@@ -1,6 +1,6 @@
 # Chess-Engine
 
-##Compilation
+## Compilation
 run:
 
 ```bash
